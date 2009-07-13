@@ -5,7 +5,7 @@ require "rake/rdoctask"
 Rake::RDocTask.new("doc") do |rdoc|
   rdoc.rdoc_dir = 'doc'
   rdoc.options += %w[--all --inline-source --line-numbers --main README.rdoc --quiet
-    --tab-width 2 --title Async::HTTP]
+    --tab-width 2 --title monkey-lib]
   rdoc.rdoc_files.add ['*.rdoc', 'lib/**/*.rb']
 end
 
