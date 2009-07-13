@@ -28,3 +28,24 @@ This would go to the file lib/monkey/object/magic_stuff.rb:
       
     end
   end
+
+Add to lib/monkey/object.rb:
+
+  require "monkey/object/magic_stuff"
+
+If that file didn't exist before, add to lib/monkey.rb:
+
+  require "monkey/object"
+
+Write a spec in spec/monkey/object/magic_stuff_spec.rb:
+
+  require __FILE__.sub("monkey/object/magic_stuff_spec.rb", "spec_helper")
+  require "monkey/object/magic_stuff"
+
+  describe Monkey::Object::MagicStuff do
+  
+    it "performs magic" do
+      # ...
+    end
+  
+  end   
