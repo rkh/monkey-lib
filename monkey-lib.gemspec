@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name             = "monkey-lib"
-  s.version          = "0.1.2"
+  s.version          = "0.1.3"
   s.authors          = ["Konstantin Haase"]
   s.description      = "collection of sane ruby extensions"
   s.email            = "konstantin.mailinglists@googlemail.com"
