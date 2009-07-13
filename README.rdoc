@@ -1,0 +1,30 @@
+Sort of my own ruby extlib. There is a spec for everything and it is very clean.
+It does avoid monkey patching and relies on modules.
+
+= Template for extentiones
+
+Say we want to extend Object by adding some methods dealing with magic.
+This would go to the file lib/monkey/object/magic_stuff.rb:
+
+  module Monkey
+    module Object
+    
+      # It's magic!
+      module MagicStuff
+      
+        ::Object.send :include, self
+        
+        def hokus_pokus
+          Spell.perform(self)
+        end
+        
+        def vanish_in_thin_air
+          class << self
+            instance_methods.each { |m| undef_method(m) }
+          end
+        end
+      
+      end
+      
+    end
+  end
