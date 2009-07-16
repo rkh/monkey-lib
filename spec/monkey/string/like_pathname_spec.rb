@@ -151,6 +151,7 @@ describe Monkey::String::LikePathname do
   it "exposes exist? to String" do
     @strings.each do |s|
       s.exist?.should == Pathname(s).exist?
+      s.exists?.should == Pathname(s).exist? 
     end
   end
 

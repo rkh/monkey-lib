@@ -30,6 +30,8 @@ module Monkey
       #  result
       #end
       
+      alias exists? exist?
+      
     end
         
   end
