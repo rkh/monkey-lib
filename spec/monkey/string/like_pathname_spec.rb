@@ -10,10 +10,10 @@ describe Monkey::String::LikePathname do
     end
   end
   
-  it "exposes sub_ext to String" do
+  it "exposes sub_ext to String if in ruby 1.9" do
     @strings.each do |s|
       s.sub_ext(".png").should == Pathname(s).sub_ext(".png").to_s
-    end
+    end if RUBY_VERSION >= "1.9"
   end
 
   it "exposes cleanpath to String" do
@@ -58,10 +58,10 @@ describe Monkey::String::LikePathname do
     end
   end
 
-  it "exposes each_filename to String" do
+  it "exposes each_filename to String if in ruby 1.9" do
     @strings.each do |s|
       s.each_filename.to_a.should == Pathname(s).each_filename.to_a
-    end
+    end if RUBY_VERSION >= "1.9"
   end
 
   it "exposes join to String" do
@@ -197,10 +197,10 @@ describe Monkey::String::LikePathname do
     end
   end
 
-  it "exposes world_readable? to String" do
+  it "exposes world_readable? to String  in ruby 1.9" do
     @strings.each do |s|
       s.world_readable?.should == Pathname(s).world_readable?
-    end
+    end if RUBY_VERSION >= "1.9"
   end
 
   it "exposes readable_real? to String" do
@@ -245,10 +245,10 @@ describe Monkey::String::LikePathname do
     end
   end
 
-  it "exposes world_writable? to String" do
+  it "exposes world_writable? to String in ruby 1.9" do
     @strings.each do |s|
       s.world_writable?.should == Pathname(s).world_writable?
-    end
+    end if RUBY_VERSION >= "1.9"
   end
 
   it "exposes writable_real? to String" do
@@ -263,10 +263,10 @@ describe Monkey::String::LikePathname do
     end
   end
 
-  it "exposes entries to String" do
+  it "exposes entries to String in ruby 1.9" do
     @strings.each do |s|
       s.entries.should == Pathname(s).entries if s.directory?
-    end
+    end if RUBY_VERSION >= "1.9"
   end
     
 end

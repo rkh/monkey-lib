@@ -4,7 +4,7 @@ require "rake/rdoctask"
 require "rake/gempackagetask"
 require "rubygems/specification"
 
-MONKEY_VERSION = "0.1.4"
+MONKEY_VERSION = "0.1.6"
 
 spec = Gem::Specification.new do |s|
   s.name             = "monkey-lib"

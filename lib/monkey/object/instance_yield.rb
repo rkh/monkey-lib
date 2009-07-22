@@ -27,6 +27,7 @@ module Monkey
       
       # See InstanceYield description.
       def instance_yield(block = nil, &alternate_block)
+        raise ArgumentError, "too many blocks given" if block && alternate_block
         block ||= alternate_block
         raise LocalJumpError, "no block given (yield)" unless block
         block.arity > 0 ? yield(self) : instance_eval(&block)
