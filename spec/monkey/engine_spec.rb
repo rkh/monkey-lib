@@ -1,5 +1,4 @@
-require __FILE__.sub("monkey/engine_spec.rb", "spec_helper")
-require "monkey/engine"
+require __FILE__.sub(%r{monkey/.*$}, "spec_helper")
 
 describe Monkey::Engine do
   
