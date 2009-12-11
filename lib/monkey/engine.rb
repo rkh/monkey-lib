@@ -1,17 +1,45 @@
 module Monkey
-  
+
   # Makes sure we always have RUBY_ENGINE, RUBY_ENGINE_VERSION and RUBY_DESCRIPTION
+  # TODO: Check IronRuby version detection.
   module Engine
+
+    def jruby?;    RUBY_ENGINE == "jruby";    end
+    def mri?;      RUBY_ENGINE == "ruby";     end
+    def rbx?;      RUBY_ENGINE == "rbx";      end
+    def ironruby?; RUBY_ENGINE == "ironruby"; end
+    def macruby?;  RUBY_ENGINE == "macruby";  end
+    def maglev?;   RUBY_ENGINE == "maglev";   end
+
+    alias rubinius? rbx?
+
+    def ree?
+      RUBY_DESCRIPTION =~ /Ruby Enterprise Edition/
+    end
+
+    module_function :jruby?
+    module_function :mri?
+    module_function :rbx?
+    module_function :rubinius?
+    module_function :ironruby?
+    module_function :macruby?
+    module_function :maglev?
+    module_function :ree?
+    
+    def ruby_core?
+      maglev? or rubinius?
+    end
+    
+    module_function :ruby_core?
 
     include Rubinius if defined? Rubinius
 
     unless defined? RUBY_ENGINE
-      if defined? JRUBY_VERSION
-        ::RUBY_ENGINE = "jruby"
-      elsif defined? Rubinius
-        ::RUBY_ENGINE = "rbx"
-      else
-        ::RUBY_ENGINE = "ruby"
+      if    defined? JRUBY_VERSION then ::RUBY_ENGINE = "jruby"
+      elsif defined? Rubinius      then ::RUBY_ENGINE = "rbx"
+      elsif defined? NSObject      then ::RUBY_ENINGE = "macruby"
+      elsif defined? Maglev        then ::RUBY_ENINGE = "maglev"
+      else                              ::RUBY_ENGINE = "ruby"
       end
     end
 
@@ -21,7 +49,15 @@ module Monkey
       RUBY_ENGINE.freeze
     end
 
-    ::RUBY_ENGINE_VERSION = const_get("#{RUBY_ENGINE.upcase}_VERSION")
+    unless defined? RUBY_ENGINE_VERSION
+      begin
+        # ruby, jruby, macruby, some rubinius versions
+        ::RUBY_ENGINE_VERSION = const_get("#{RUBY_ENGINE.upcase}_VERSION")
+      rescue NameError
+        # maglev, some rubinius versions
+        ::RUBY_ENGINE_VERSION = const_get("VERSION")
+      end
+    end
 
     unless defined? RUBY_DESCRIPTION
       ::RUBY_DESCRIPTION = "#{RUBY_ENGINE} #{RUBY_ENGINE_VERSION} "
@@ -38,52 +74,17 @@ module Monkey
       ::RUBY_DESCRIPTION << "[#{RUBY_PLATFORM}]"
     end
 
-    def jruby?
-      RUBY_ENGINE == "jruby"
-    end
-
-    module_function :jruby?
-
-    def mri?
-      RUBY_ENGINE == "ruby"
-    end
-
-    module_function :mri?
-
-    def rbx?
-      RUBY_ENGINE == "rbx"
-    end
-
-    alias rubinius? rbx?
-    module_function :rbx?
-    module_function :rubinius?
-
-    def ironruby?
-      RUBY_ENGINE == "ironruby"
-    end
-
-    module_function :ironruby?
-
-    def macruby?
-      RUBY_ENGINE == "macruby"
-    end
-
-    module_function :macruby?
-
     def ruby_engine(pretty = true)
       return RUBY_ENGINE unless pretty
       case RUBY_ENGINE
-      when "ruby"  then "CRuby"
-      when "rbx"   then "Rubinius"
-      when /ruby$/ then RUBY_ENGINE.capitalize.gsub("ruby", "Ruby")
+      when "ruby"   then "MatzRuby"
+      when "rbx"    then "Rubinius"
+      when "maglev" then "MagLev"
+      else RUBY_ENGINE.capitalize.gsub("ruby", "Ruby")
       end
     end
 
     module_function :ruby_engine
 
   end
-  
-  extend Engine
-  include Engine
-
 end

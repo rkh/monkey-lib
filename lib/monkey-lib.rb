@@ -1,1 +1,2 @@
 require "monkey"
+MonkeyLib = Monkey
