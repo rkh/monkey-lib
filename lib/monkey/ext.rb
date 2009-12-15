@@ -13,13 +13,22 @@ module Monkey
 
       def expects(*list)
         list.each do |name|
-          unless instance_methods.include? name.to_s or instance_methods.include? name.to_sym
-            # Note: Ruby < 1.8.7 does not support { |*a, &b| } syntax.
-            class_eval "def #{name}(*a, &b); Monkey::Backend.call(#{core_class.inspect}, #{name.to_s.inspect}, *a, &b); end"
-          end
+          Monkey::Ext.expectations[core_class] << name
+          # Note: Ruby < 1.8.7 does not support { |*a, &b| } syntax.
+          class_eval(<<-EOS, __FILE__, __LINE__ + 1)
+            def #{name}(*a, &b)
+              #{self.name}.send :remove_method, __method__
+              Monkey::Backend.setup
+              __send__(__method__, *a, &b)
+            end
+          EOS
         end
       end
 
+    end
+    
+    def self.expectations
+      @expectations ||= Hash.new { |h,k| h[k] = [] }
     end
 
     Dir[File.dirname(__FILE__) + "/ext/*.rb"].sort.each do |path|

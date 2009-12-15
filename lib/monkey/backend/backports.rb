@@ -1,17 +1,11 @@
-module Monkey
-  module Backend
-    module Backports
-      def setup
-        require "backports/1.8.7/kernel"
-        require "backports/rails/array"
-        require "backports/rails/string"
-        require "monkey/backend/common/parent"
-        require "monkey/backend/common/metaclass"
-        ::String.class_eval do
-          alias to_const_string camelcase
-          alias to_const_path underscore
-        end
-      end
+Monkey::Backend.new :Backports do
+  def self.setup
+    load_libs "tools", "1.8.7/kernel", :rails => [:array, :string]
+    missing :parent, :metaclass
+    ::String.class_eval do
+      alias camelcase camelize
+      alias to_const_string camelize
+      alias to_const_path underscore
     end
   end
 end
