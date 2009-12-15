@@ -1,5 +1,5 @@
 /doc
 *~
 *.rbc
+*.gem
 /pkg
-monkey-lib.gemspec
