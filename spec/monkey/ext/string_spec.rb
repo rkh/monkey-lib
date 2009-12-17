@@ -11,24 +11,24 @@ describe Monkey::Ext::String do
     end
 
     # expects :to_const_string
-    it "imports :to_const_string from backend" do
+    it "imports to_const_string from backend" do
       "object".to_const_string.should == "Object"
       "monkey/ext".to_const_string.should == "Monkey::Ext"
     end
 
     # expects :to_const_path
-    it "imports :to_const_path from backend" do
+    it "imports to_const_path from backend" do
       "Object".to_const_path.should == "object"
       "Monkey::Ext".to_const_path.should == "monkey/ext"
     end
 
     # expects :underscore
-    it "imports :underscore from backend" do
+    it "imports underscore from backend" do
       "FooBar".underscore.should == "foo_bar"
     end
 
     # expects :camelcase
-    it "imports :camelcase from backend" do
+    it "imports camelcase from backend" do
       ["FooBar", "fooBar"].should include("foo_bar".camelcase)
     end
 

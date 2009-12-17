@@ -1,12 +1,29 @@
 require __FILE__.sub(%r{monkey/.*$}, "spec_helper")
 
 describe Monkey::Ext::Object do
-  
-  
+
+  before do
+    @obj = Object.new
+  end
+
+  describe "backend expectations" do
+
+    # expects :tap
+    it "imports tap from backend" do
+      @obj.tap { |o| o.should == @obj }
+      42.tap { 23 }.should == 42
+    end
+
+    # expects :metaclass
+    it "imports metaclass from backend" do
+      @obj.metaclass.should == (class << @obj; self; end)
+    end
+
+  end
+
   describe :instance_yield do
 
     before do
-      @obj = Object.new
       @obj.stub! :foo
     end
 
@@ -30,7 +47,7 @@ describe Monkey::Ext::Object do
         foo
       end
     end
-    
+
   end
-  
+
 end

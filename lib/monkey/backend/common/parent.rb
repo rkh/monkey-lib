@@ -1,12 +1,10 @@
 module Monkey
   module Backend
     module Common
-      module Metaclass
-        ::Object.send :include, self
-        def metaclass
-          class << self
-            self
-          end
+      module Parent
+        ::Module.send :include, self
+        def parent
+          name =~ /^(.+)::[^:]+$/ ? $1.constantize : Object
         end
       end
     end

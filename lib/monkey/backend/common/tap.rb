@@ -2,7 +2,7 @@ module Monkey
   module Backend
     module Common
       module Tap
-        ::Kernel.send :include, self
+        ::Object.send :include, self
         def tap
           yield self
           self
