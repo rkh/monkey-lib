@@ -8,39 +8,40 @@ modes = [:autodetect, :explicit]
 CLEAN.include "**/*.rbc"
 CLOBBER.include "monkey-lib*.gem"
 
-def spec_task(name, backend = nil, mode = nil)
-  desc "runs specs with backend #{backend} (#{mode} mode)"
-  task name => "#{name}:default"
-  ruby_cmd = "BACKEND=#{backend.to_s.inspect} BACKEND_SETUP=#{mode.to_s.inspect} #{ENV['RUBY'] || RUBY}"
-  pattern  = "spec/monkey/**/*_spec.rb"
-  namespace name do
-    spec_task_with(:rspec, "spec/rake/spectask", true, backend, mode) do
-      Spec::Rake::SpecTask.new :rspec do |t|
-        t.spec_opts = %w[-c --format progress --loadby mtime --reverse]
-        t.ruby_cmd = ruby_cmd
-        t.pattern = pattern
-        t.verbose = true
-      end
-    end
-    spec_task_with(:mspec, "mspec", false, backend, mode) do
-      task(:mspec) { sh "#{ruby_cmd} -S mspec-run #{pattern}" }
+setup_rspec = proc do
+  require "spec/rake/spectask"
+  SPEC_RUNNER = "mspec"
+  def define_spec_task(name, ruby_cmd, pattern)
+    Spec::Rake::SpecTask.new name do |t|
+      t.spec_opts = %w[-c --format progress --loadby mtime --reverse]
+      t.ruby_cmd = ruby_cmd
+      t.pattern = pattern
     end
   end
 end
 
-def spec_task_with(tool, lib, is_standard, backend, mode)
-  description = "runs specs with backend #{backend} (#{mode} mode, with #{tool})"
-  require lib
-  desc description
-  task(tool) { puts "", "", "Running specs with #{tool}." }
-  yield
-  task :default => tool
-rescue LoadError
-  if is_standard
-    desc description
-    task :default => tool
+setup_mspec = proc do
+  require "mspec"
+  SPEC_RUNNER = "mspec"
+  def define_spec_task(name, ruby_cmd, pattern)
+    task(name) { sh "#{ruby_cmd} -S mspec-run #{pattern}" }
   end
-  task(tool) { raise "install #{tool}: gem install #{tool}" }
+end
+
+case ENV['SPEC_RUNNER']
+when "rspec" then setup_rspec.call
+when "mspec" then setup_mspec.call
+when nil
+  # yes, this code is trying to be smart, but let me have some fun, please?
+  raise @spec_load_error unless [setup_rspec, setup_mspec].any? { |b| b.call || true rescue (@spec_load_error ||= $!) && false }
+else
+  puts "sorry, currently no #{ENV['SPEC_RUNNER']} support"
+  exit 1
+end
+
+def spec_task(name, backend = nil, mode = nil)
+  desc "runs specs #{"with backend #{backend} " if backend}#{"(#{mode} mode)" if mode}"
+  define_spec_task(name, "BACKEND=#{backend.to_s.inspect} BACKEND_SETUP=#{mode.to_s.inspect} #{ENV['RUBY'] || RUBY}", "spec/monkey/**/*_spec.rb")
 end
 
 task :environment do
