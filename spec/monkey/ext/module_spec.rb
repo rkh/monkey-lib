@@ -8,6 +8,8 @@ describe Monkey::Ext::Module do
       Monkey::Ext.parent.should == Monkey
       Monkey.parent.should == Object
       Object.parent.should == Object
+      Foo = Monkey::Ext::Module
+      Foo.parent.should == Monkey::Ext
     end
   end
 end
