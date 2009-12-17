@@ -6,8 +6,8 @@ task :default => :spec
 backends = Dir.glob('lib/monkey/backend/*.rb').map { |f| File.basename f, ".rb" }
 modes = [:autodetect, :explicit]
 
-CLEAN   << "**/*.rbc"
-CLOBBER << "monkey-lib*.gem"
+CLEAN.include "**/*.rbc"
+CLOBBER.include "monkey-lib*.gem"
 
 def spec_task(name, backend = nil, mode = nil)
   Spec::Rake::SpecTask.new name do |t|
