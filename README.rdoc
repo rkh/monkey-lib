@@ -1,0 +1,12 @@
+Some description goes here.
+
+== Running the specs
+
+Run specs with all backends:
+  rake spec
+
+Run specs with active_support:
+  rake spec:active_support
+
+Run specs with backports and using mspec instead of rspec (so it might work on incomplete ruby implementations):
+  SPEC_RUNNER=mspec rake spec:backports
