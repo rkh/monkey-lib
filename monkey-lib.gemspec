@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 SPEC = Gem::Specification.new do |s|
   s.name             = "monkey-lib"
-  s.version          = "0.2.3"
+  s.version          = "0.3.0"
   s.authors          = ["Konstantin Haase"]
   s.description      = "Making ruby extension frameworks pluggable."
   s.email            = "konstantin.mailinglists@googlemail.com"

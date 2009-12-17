@@ -7,26 +7,25 @@ module Monkey
         if klass
           @core_class = klass
           klass.send :include, self
+          @core_class.class_eval <<-EOS
+            def method_missing(meth, *args, &blk)
+              return super if Monkey::Backend.setup?
+              Monkey::Backend.setup
+              __send__(meth, *args, &blk)
+            end
+          EOS
         end
         return @core_class
       end
 
       def expects(*list)
         list.each do |name|
-          Monkey::Ext.expectations[core_class] << name
-          # Note: Ruby < 1.8.7 does not support { |*a, &b| } syntax.
-          class_eval(<<-EOS, __FILE__, __LINE__ + 1)
-            def #{name}(*a, &b)
-              #{self.name}.send :remove_method, __method__
-              Monkey::Backend.setup
-              __send__(__method__, *a, &b)
-            end
-          EOS
+          Monkey::Ext.expectations[core_class] << name.to_s
         end
       end
 
     end
-    
+
     def self.expectations
       @expectations ||= Hash.new { |h,k| h[k] = [] }
     end

@@ -5,9 +5,9 @@ Monkey::Backend.new :Facets do
     missing :tap, :extract_options, :parent
     ::String.class_eval do
       def constantize
-        constant modulize
+        constant to_const_string
       end
-      alias to_const_string camelcase
+      alias to_const_string upper_camelcase
       alias to_const_path snakecase
       alias underscore snakecase
     end

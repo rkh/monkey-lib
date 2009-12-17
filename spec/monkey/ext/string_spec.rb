@@ -29,7 +29,7 @@ describe Monkey::Ext::String do
 
     # expects :camelcase
     it "imports :camelcase from backend" do
-      "foo_bar".camelcase.should == "FooBar"
+      ["FooBar", "fooBar"].should include("foo_bar".camelcase)
     end
 
   end
