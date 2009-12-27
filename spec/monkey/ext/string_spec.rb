@@ -82,6 +82,7 @@ describe Monkey::Ext::String do
     it "imports Pathname's file_join to String" do
       @strings.each do |s|
         s.file_join("foo").should == Pathname(s).join("foo").to_s
+        s.file_join(:foo).should == Pathname(s).join("foo").to_s
       end
     end
 

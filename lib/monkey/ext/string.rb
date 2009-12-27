@@ -89,7 +89,7 @@ module Monkey
       end
 
       def file_join(other)
-        Pathname(self).join(other).to_s
+        Pathname(self).join(other.to_s).to_s
       end
 
       alias / file_join
