@@ -14,7 +14,7 @@ module Monkey
     alias rubinius? rbx?
 
     def ree?
-      RUBY_DESCRIPTION =~ /Ruby Enterprise Edition/
+      !!(RUBY_DESCRIPTION =~ /Ruby Enterprise Edition/)
     end
 
     module_function :jruby?
