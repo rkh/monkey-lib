@@ -85,6 +85,7 @@ module Monkey
       return engine unless pretty
       case engine
       when "ruby"   then ree? ? "Ruby Enterprise Edition" : "Ruby"
+      when "ree"    then "Ruby Enterprise Edition"
       when "rbx"    then "Rubinius"
       when "maglev" then "MagLev"
       else engine.capitalize.gsub("ruby", "Ruby")
