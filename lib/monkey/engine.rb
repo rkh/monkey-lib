@@ -87,7 +87,7 @@ module Monkey
       when "ruby"   then ree? ? "Ruby Enterprise Edition" : "Ruby"
       when "rbx"    then "Rubinius"
       when "maglev" then "MagLev"
-      else RUBY_ENGINE.capitalize.gsub("ruby", "Ruby")
+      else engine.capitalize.gsub("ruby", "Ruby")
       end
     end
 
