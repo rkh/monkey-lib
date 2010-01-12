@@ -77,7 +77,7 @@ module Monkey
     def ruby_engine(pretty = true)
       return RUBY_ENGINE unless pretty
       case RUBY_ENGINE
-      when "ruby"   then "MatzRuby"
+      when "ruby"   then ree? ? "Ruby Enterprise Edition" : "Ruby"
       when "rbx"    then "Rubinius"
       when "maglev" then "MagLev"
       else RUBY_ENGINE.capitalize.gsub("ruby", "Ruby")
