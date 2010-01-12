@@ -14,7 +14,7 @@ module Monkey
     alias rubinius? rbx?
 
     def ree?
-      !!(RUBY_DESCRIPTION =~ /Ruby Enterprise Edition/)
+      !!(RUBY_DESCRIPTION =~ /Ruby Enterprise Edition/) || RUBY_ENGINE == "ree"
     end
 
     module_function :jruby?
@@ -25,11 +25,11 @@ module Monkey
     module_function :macruby?
     module_function :maglev?
     module_function :ree?
-    
+
     def ruby_core?
       maglev? or rubinius?
     end
-    
+
     module_function :ruby_core?
 
     include Rubinius if defined? Rubinius
@@ -74,9 +74,16 @@ module Monkey
       ::RUBY_DESCRIPTION << "[#{RUBY_PLATFORM}]"
     end
 
-    def ruby_engine(pretty = true)
-      return RUBY_ENGINE unless pretty
-      case RUBY_ENGINE
+    if ree?
+      ::REAL_RUBY_ENGINE_VERSION = ::REE_VERSION = RUBY_DESCRIPTION[/[^ ]+$/]
+      ::REAL_RUBY_ENGINE = "ree"
+    else
+      ::REAL_RUBY_ENGINE, ::REAL_RUBY_ENGINE_VERSION = ::RUBY_ENGINE, ::RUBY_ENGINE_VERSION
+    end
+
+    def ruby_engine(engine = RUBY_ENGINE, pretty = true)
+      return engine unless pretty
+      case engine
       when "ruby"   then ree? ? "Ruby Enterprise Edition" : "Ruby"
       when "rbx"    then "Rubinius"
       when "maglev" then "MagLev"
@@ -85,6 +92,47 @@ module Monkey
     end
 
     module_function :ruby_engine
+    
+    def self.set_engine(engine, engine_version = nil)
+      Object.send :remove_const, "RUBY_ENGINE"
+      Object.const_set "RUBY_ENGINE", engine
+      if engine_version
+        Object.send :remove_const, "RUBY_ENGINE_VERSION"
+        Object.const_set "RUBY_ENGINE_VERSION", engine_version
+      end
+    end
+
+    def with_ruby_engine(engine, engine_version)
+      engine_was, engine_version_was = ::RUBY_ENGINE, ::RUBY_ENGINE_VERSION
+      unless defined? ::OLD_RUBY_ENGINE
+        Object.const_set("OLD_RUBY_ENGINE", ::RUBY_ENGINE)
+        Object.const_set("OLD_RUBY_ENGINE_VERSION", ::RUBY_ENGINE_VERSION)
+      end
+      Monkey::Engine.set_engine engine, engine_version
+      if block_given?
+        result = yield
+        Monkey::Engine.set_engine engine_was, engine_version_was
+        result
+      else
+        [engine_was, engine_version_was]
+      end
+    end
+
+    module_function :with_ruby_engine
+
+    def use_real_ruby_engine(&block)
+      with_ruby_engine(::REAL_RUBY_ENGINE, ::REAL_RUBY_ENGINE_VERSION, &block)
+    end
+
+    module_function :use_real_ruby_engine
+
+    def use_original_ruby_engine(&block)
+      if defined? ::OLD_RUBY_ENGINE then with_ruby_engine(::OLD_RUBY_ENGINE, ::OLD_RUBY_ENGINE_VERSION, &block)
+      else with_ruby_engine(::RUBY_ENGINE, ::RUBY_ENGINE_VERSION, &block)
+      end
+    end
+
+    module_function :use_original_ruby_engine
 
   end
 end
