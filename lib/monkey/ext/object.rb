@@ -25,8 +25,8 @@ module Monkey
         block.arity > 0 ? yield(self) : instance_eval(&block)
       end
       
-      def metaclass_eval(str = nil, &block)
-        metaclass.class_eval(str, &block)
+      def metaclass_eval(&block)
+        metaclass.class_eval(&block)
       end
       
       def define_singleton_method(name, &block)
