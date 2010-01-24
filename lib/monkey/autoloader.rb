@@ -10,6 +10,7 @@ module Monkey
         if const_defined? const_name
           const = const_get const_name
           const.extend Monkey::Autoloader
+          constants.each { |c| c.extend Monkey::Autoloader if c.is_a? Module and not c.is_a? Monkey::Autoloader }
           const
         else
           warn "expected #{file} to define #{name}::#{const_name}"
