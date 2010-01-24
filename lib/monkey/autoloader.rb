@@ -4,7 +4,7 @@ module Monkey
   module Autoloader
     def const_missing(const_name)
       const_name = const_name.to_s
-      file = File.join(const_name.to_const_path, self.name.to_const_path)
+      file = File.join(self.name.to_const_path, const_name.to_const_path)
       begin
         require file
         if const_defined? const_name
