@@ -8,7 +8,7 @@ module Monkey
       begin
         require file
         if const_defined? const_name
-          const = const_get const_get
+          const = const_get const_name
           const.extend Monkey::Autoloader
           const
         else
@@ -16,6 +16,10 @@ module Monkey
           raise LoadError
         end
       rescue LoadError
+        begin
+          return parent.const_get(const_name) if parent != self
+        rescue NameError
+        end
         super
       end
     end
