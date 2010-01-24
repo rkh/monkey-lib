@@ -28,17 +28,17 @@ module Monkey
         if const_defined? const_name
           const = const_get const_name
           const.extend Monkey::Autoloader
-          constants.each { |c| c.extend Monkey::Autoloader if c.is_a? Module and not c.is_a? Monkey::Autoloader }
           const
         else
           warn "expected #{file} to define #{name}::#{const_name}"
           raise LoadError
         end
-      rescue LoadError
+      rescue LoadError => error
         begin
           return parent.const_get(const_name) if parent != self
         rescue NameError
         end
+        warn "tried to load #{file}: #{error.message}"
         super
       end
     end
