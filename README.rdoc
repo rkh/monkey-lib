@@ -19,7 +19,8 @@ MonkeyLib has been tested and is known to work with the following Ruby implement
 * MagLev 22780 (Backports backend recommended, but all expectations pass on all backends)
 * IronRuby 0.9.3 (only Extlib and Backports)
 
-Currently it does +not+ run on MacRuby, but I'm working on it.
+Currently it does *not* run on MacRuby, but I'm working on it. (Meaning: The specs are not working.
+Manual testing hints it might just work fine with Backports.)
 
 == Running the specs
 
