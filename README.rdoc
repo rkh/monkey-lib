@@ -1,4 +1,24 @@
-Some description goes here.
+Makes ruby extension libraries pluggable (thus not forcing such a library
+on the users of your library - like BigBand - but still giving you some
+fancy features).
+
+== Backends
+Those libraries are supported as backends out of the box:
+* ActiveSupport (from Rails)
+* Backports
+* Extlib (from Merb)
+* Facets
+
+== Ruby versions
+MonkeyLib has been tested and is known to work with the following Ruby implementations:
+
+* Ruby (MRI) 1.8.6, 1.8.7, 1.9.1, 1.9.2-preview1
+* Ruby Enterprise Edition 2009.10, 2010.01
+* Rubinius 1.0.0rc2
+* MagLev 22780 (Backports backend recommended, but all expectations pass on all backends)
+* IronRuby 0.9.3 (only Extlib and Backports)
+
+Currently it does +not+ run on MacRuby, but I'm working on it.
 
 == Running the specs
 
