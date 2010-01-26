@@ -50,6 +50,7 @@ describe Monkey::Ext::String do
     end
 
     it "imports Pathname's realpath to String" do
+      pending if Monkey::Engine.rbx?
       @strings.each do |s|
         s.realpath.should == Pathname(s).realpath.to_s
       end
