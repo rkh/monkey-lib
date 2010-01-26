@@ -19,8 +19,7 @@ MonkeyLib has been tested and is known to work with the following Ruby implement
 * MagLev 22780 (Backports backend recommended, but all expectations pass on all backends)
 * IronRuby 0.9.3 (only Extlib and Backports)
 
-Currently it does *not* run on MacRuby, but I'm working on it. (Meaning: The specs are not working.
-Manual testing hints it might just work fine with Backports.)
+Currently it does *not* run on MacRuby, but I'm working on it.
 
 == Running the specs
 
@@ -40,4 +39,4 @@ with your ruby). You can use one ruby implementation to run the specs on another
   rvm use macruby-0.5
   gem install mspec backports
   rvm use default
-  RUBY=$rvm_path/.rvm/rubies/macruby-0.5/bin/ruby SPEC_RUNNER=mspec rake spec:backports
+  RUBY=$rvm_path/rubies/macruby-0.5/bin/ruby SPEC_RUNNER=mspec rake spec:backports
