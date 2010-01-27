@@ -2,6 +2,9 @@ Makes ruby extension libraries pluggable (thus not forcing such a library
 on the users of your library - like BigBand - but still giving you some
 fancy features).
 
+TODO: Describe what it actually does. Feel free to have a look at the specs/code, should
+be pretty easy to understand.
+
 == Backends
 Those libraries are supported as backends out of the box:
 * ActiveSupport (from Rails)
