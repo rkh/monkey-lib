@@ -1,5 +1,3 @@
-require "pathname"
-
 module Monkey
   module Ext
     module Pathname
