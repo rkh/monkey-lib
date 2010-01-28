@@ -45,6 +45,10 @@ module Monkey
       def dirname
         Pathname(self).dirname.to_s
       end
+      
+      def cased_path
+        Pathname(self).cased_path.to_s
+      end
 
       def expand_path
         Pathname(self).expand_path.to_s
