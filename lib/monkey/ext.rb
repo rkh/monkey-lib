@@ -1,3 +1,5 @@
+require "pathname"
+
 module Monkey
   module Ext
 
@@ -35,12 +37,7 @@ module Monkey
       class_name = filename.capitalize
       extension  = eval "module ::Monkey::Ext::#{class_name}; self; end" # <- for MacRuby!?
       extension.extend ExtDSL
-      begin
-        extension.core_class Object.const_get(class_name)
-      rescue
-        require filename
-        retry
-      end
+      extension.core_class Object.const_get(class_name)
       require "monkey/ext/#{filename}"
     end
 
