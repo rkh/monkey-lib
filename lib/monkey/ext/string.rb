@@ -49,6 +49,10 @@ module Monkey
       def cased_path
         Pathname(self).cased_path.to_s
       end
+      
+      def chdir(&block)
+        Pathname(self).chdir(&block)
+      end
 
       def expand_path
         Pathname(self).expand_path.to_s
@@ -97,6 +101,10 @@ module Monkey
       end
 
       alias / file_join
+      
+      def file_open(mode = 'r', &block)
+        Pathname(self).open(mode = 'r', &block)
+      end
 
       def file_readable?
         Pathname(self).readable?

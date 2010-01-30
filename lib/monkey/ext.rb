@@ -9,6 +9,7 @@ module Monkey
         if klass
           @core_class = klass
           klass.send :include, self
+          klass.extend self::ClassMethods if defined? self::ClassMethods
           @core_class.class_eval <<-EOS
             def method_missing(meth, *args, &blk)
               return super if Monkey::Backend.setup?
@@ -32,8 +33,8 @@ module Monkey
       @expectations ||= Hash.new { |h,k| h[k] = [] }
     end
 
-    Dir[File.dirname(__FILE__) + "/ext/*.rb"].sort.each do |path|
-      filename   = File.basename(path, '.rb')
+    Dir[::File.dirname(__FILE__) + "/ext/*.rb"].sort.each do |path|
+      filename   = ::File.basename(path, '.rb')
       class_name = filename.capitalize
       extension  = eval "module ::Monkey::Ext::#{class_name}; self; end" # <- for MacRuby!?
       extension.extend ExtDSL
