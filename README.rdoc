@@ -7,10 +7,10 @@ be pretty easy to understand.
 
 == Backends
 Those libraries are supported as backends out of the box:
-* ActiveSupport (from Rails)
-* Backports
-* Extlib (from Merb)
-* Facets
+* ActiveSupport (tested with 2.3.2 to 3.0.pre)
+* Backports (tested with 1.11.1 to 1.13.2, >= 1.13.1 required for Rubinius)
+* Extlib (tested with 0.9.13 and 0.9.14)
+* Facets (tested with 2.8.0 and 2.8.1)
 
 == Ruby versions
 MonkeyLib has been tested and is known to work with the following Ruby implementations:
