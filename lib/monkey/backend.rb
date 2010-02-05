@@ -23,6 +23,8 @@ module Monkey
         load_with_prefix backend_path, data
       end
 
+      alias load_lib load_libs
+
       def load_with_prefix(prefix, libs = nil)
         case libs
         when String, Symbol then require File.join(prefix.to_s, libs.to_s)
@@ -31,11 +33,11 @@ module Monkey
         else raise ArgumentError, "cannot handle #{libs.inspect}"
         end
       end
-      
+
       def missing(*libs)
         load_with_prefix "monkey/backend/common", libs
       end
-      
+
       def expects_module(name)
         name.split("::").inject(Object) do |parent, name|
           if name.empty?
@@ -47,7 +49,7 @@ module Monkey
       end
 
     end
-    
+
     def self.new(backend_name, backend_path = nil, &block)
       mod = eval "module #{backend_name}; self; end"
       mod.extend AbstractBackend
@@ -91,7 +93,7 @@ module Monkey
     def self.setup
       setup! preferred_backend unless setup?
     end
-    
+
     def self.detect_backend(backend_or_name)
       return backend_or_name if backend_or_name.respond_to? :setup
       detected = available_backends.detect do |backend|
