@@ -17,9 +17,9 @@ MonkeyLib has been tested and is known to work with the following Ruby implement
 
 * Ruby (MRI) 1.8.6, 1.8.7, 1.9.1, 1.9.2-preview1
 * Ruby Enterprise Edition 2009.10, 2010.01
-* Rubinius 1.0.0rc2
+* Rubinius 1.0.0-rc2, 1.0.0-rc3
 * JRuby 1.3.1, 1.4.0
-* MagLev 22780 (Backports backend recommended, but all expectations pass on all backends)
+* MagLev 22780, 2804, 2816 (Backports backend recommended, but all expectations pass on all backends)
 * IronRuby 0.9.3 (only Extlib and Backports)
 
 Currently it does *not* run on MacRuby, but I'm working on it.
