@@ -11,7 +11,7 @@ module Monkey
       attr_accessor :backend_name, :backend_path
 
       def available?
-        Object.const_defined? backend_name or $LOADED_FEATURES.any? { |l| l =~ /^#{backend_path}\// }
+        Object.const_defined? backend_name
       end
 
       def setup_complete
@@ -68,10 +68,10 @@ module Monkey
     end
 
     def self.setup!(backend)
+      @setup = true
       if backend
         @backend = detect_backend(backend)
         @backend.setup
-        @setup = true
         @backend
       else
         available_backends.each do |backend|
