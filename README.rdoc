@@ -5,6 +5,8 @@ fancy features).
 TODO: Describe what it actually does. Feel free to have a look at the specs/code, should
 be pretty easy to understand.
 
+Version number will soon be synchronized with BigBand.
+
 == Backends
 Those libraries are supported as backends out of the box:
 * ActiveSupport (tested with 2.3.2 to 3.0.pre)
