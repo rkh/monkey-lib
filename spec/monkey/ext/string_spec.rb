@@ -38,9 +38,6 @@ describe Monkey::Ext::String do
 
     before do
       @strings = ["/usr/bin/ruby", ".", "..", ENV["HOME"]]
-      @methods = Pathname.instance_methods(false).reject do |m|
-        String.methods.include? m or m.to_s == "to_path"
-      end
     end
 
     it "imports Pathname's cleanpath to String" do

@@ -20,6 +20,36 @@ module Monkey
         end
         return @core_class
       end
+      
+      def rename_core_method(old_name, new_name)
+        new_name = new_name % old_name if new_name.is_a? String
+        core_class.class_eval do
+          alias_method new_name, old_name
+          undef_method old_name
+        end
+      end
+      
+      def wrap_core_methods(list = {})
+        list.each do |old_name, new_name|
+          rename_core_method old_name, new_name
+          define_method(old_name) { |*args| send(new_name, old_name, *args) }
+        end
+      end
+      
+      def feature(name, mode = :instance, &block)
+        case mode
+        when :instance then block.call
+        when :class then class_methods(&block)
+        when :shared
+          feature(name, :instance, &block)
+          feature(name, :class, &block)
+        else raise ArgumentError, "unkown mode #{mode.inspect}"
+        end
+      end
+      
+      def class_methods(&block)
+        raise NotImplementedError
+      end
 
       def expects(*list)
         list.each do |name|
