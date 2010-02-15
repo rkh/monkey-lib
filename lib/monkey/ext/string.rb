@@ -16,11 +16,6 @@ module Monkey
           extend Monkey::Version
           self
         end
-        
-        wrap_core_methods(:< => :comp_lt, :<= => :comp_let, :> => :comp_gt, :>= => :comp_get, :<=> => :comp) do |comp, other|
-          return other.send(comp, self) if other.is_a? Monkey::Version
-          send comp, other
-        end
 
       end
 

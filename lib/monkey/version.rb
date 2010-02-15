@@ -1,10 +1,4 @@
 module Monkey
-  VERSION = "0.3.6"
-
-  def self.version
-    Monkey::VERSION
-  end
-
   module Version
     def self.new(value = "")
       super.to_version!
@@ -38,6 +32,4 @@ module Monkey
       split(".").map { |f| f =~ /^\d+$/ ? f.to_i : f }
     end
   end
-
-  VERSION.to_version!
 end
