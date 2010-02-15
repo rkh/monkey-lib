@@ -8,8 +8,9 @@ describe Monkey::Ext::Module do
       Monkey::Ext.parent.should == Monkey
       Monkey.parent.should == Object
       Object.parent.should == Object
-      Foo = Monkey::Ext::Module
-      Foo.parent.should == Monkey::Ext
+      Object.send :remove_const, :ExtFoo if Object.const_defined? :ExtFoo
+      ExtFoo = Monkey::Ext::Module
+      ExtFoo.parent.should == Monkey::Ext
     end
   end
 end
