@@ -8,7 +8,7 @@ Module.class_eval do
       extend Monkey::Autoloader
       const_missing const_name
     else
-      const_missing_without_detection const_name
+      Monkey.invisible(__FILE__) { const_missing_without_detection const_name }
     end
   end
 
