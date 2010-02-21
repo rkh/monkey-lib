@@ -14,4 +14,13 @@ module Monkey
     Backend.backend
   end
 
+  def self.invisible(*from)
+    yield
+  rescue Exception => error
+    from << caller.first if from.empty?
+    from << __FILE__
+    error.backtrace.reject! { |l| from.any? { |f| l.include? f } }
+    raise error
+  end
+
 end
