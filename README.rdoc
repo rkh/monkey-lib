@@ -38,7 +38,7 @@ Run specs with backports and using mspec instead of rspec (so it might work on i
   SPEC_RUNNER=mspec rake spec:backports
 
 Sometimes there are issues with running rake from the ruby implementation (maybe rake is not fully supported, or the backend detection messes
-with your ruby). You can use one ruby implementation to run the specs on another one. Fo instance, I use rvm to manage my rubies:
+with your ruby). You can use one ruby implementation to run the specs on another one. For instance, I use rvm to manage my rubies:
 
   rvm install macruby-0.5
   rvm use macruby-0.5
