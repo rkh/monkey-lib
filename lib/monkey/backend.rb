@@ -103,6 +103,8 @@ module Monkey
       detected
     end
 
+    # require backport first, since we preffer it over all the others if none is available already
+    require "monkey/backend/backports"
     Dir[File.dirname(__FILE__) + "/backend/*.rb"].sort.each do |path|
       filename = File.basename(path, '.rb')
       require "monkey/backend/#{filename}"
