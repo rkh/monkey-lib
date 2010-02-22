@@ -13,4 +13,20 @@ describe Monkey::Ext::Module do
       ExtFoo.parent.should == Monkey::Ext
     end
   end
+
+  describe "nested_method_missing" do
+
+    before do
+      [:Foo, :Bar, :Blah].inject(Object) do |parent, name|
+        parent.send :remove_const, name if parent.const_defined? name
+        parent.const_set name, Module.new
+      end
+    end
+
+    it "should call nested_method_missing on parent" do
+      Foo.should_receive(:nested_method_missing).once.with(Foo::Bar, :foo)
+      Foo::Bar.foo
+    end
+
+  end
 end

@@ -5,11 +5,21 @@ module Monkey
 
     module ExtDSL
 
+      module ClassDsl
+        include ExtDSL
+        def core_class(klass = nil)
+          klass ? @core_class = klass : @core_class
+        end
+      end
+
       def core_class(klass = nil)
         if klass
           @core_class = klass
           klass.send :include, self
-          klass.extend self::ClassMethods if defined? self::ClassMethods
+          const_set :ClassMethods, ::Module.new unless const_defined? :ClassMethods
+          self::ClassMethods.extend ClassDsl
+          self::ClassMethods.core_class core_class
+          klass.extend self::ClassMethods
           @core_class.class_eval <<-EOS
             def method_missing(meth, *args, &blk)
               return super if Monkey::Backend.setup?
@@ -20,22 +30,17 @@ module Monkey
         end
         return @core_class
       end
-      
+
       def rename_core_method(old_name, new_name)
+        core_class.send :undef_method, alias_core_method(old_name, new_name)
+      end
+
+      def alias_core_method(old_name, new_name)
         new_name = new_name % old_name if new_name.is_a? String
-        core_class.class_eval do
-          alias_method new_name, old_name
-          undef_method old_name
-        end
+        core_class.send :alias_method, new_name, old_name
+        old_name
       end
-      
-      def wrap_core_methods(list = {})
-        list.each do |old_name, new_name|
-          rename_core_method old_name, new_name
-          define_method(old_name) { |*args| send(new_name, old_name, *args) }
-        end
-      end
-      
+
       def feature(name, mode = :instance, &block)
         case mode
         when :instance then block.call
@@ -46,9 +51,9 @@ module Monkey
         else raise ArgumentError, "unkown mode #{mode.inspect}"
         end
       end
-      
+
       def class_methods(&block)
-        raise NotImplementedError
+        self::ClassMethods.class_eval(&block)
       end
 
       def expects(*list)
@@ -68,7 +73,7 @@ module Monkey
       class_name = filename.capitalize
       extension  = eval "module ::Monkey::Ext::#{class_name}; self; end" # <- for MacRuby!?
       extension.extend ExtDSL
-      extension.core_class Object.const_get(class_name)
+      extension.core_class ::Object.const_get(class_name)
       require "monkey/ext/#{filename}"
     end
 

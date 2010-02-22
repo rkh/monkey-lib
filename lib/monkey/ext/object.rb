@@ -1,10 +1,10 @@
 module Monkey
   module Ext
     module Object
-      
+
       # Defined by backend.
       expects :metaclass, :tap
-      
+
       # Behaves like instance_eval or yield depending on whether a block takes an argument or not.
       #
       #   class Foo
@@ -24,15 +24,17 @@ module Monkey
         raise LocalJumpError, "no block given (yield)" unless block
         block.arity > 0 ? yield(self) : instance_eval(&block)
       end
-      
+
       def metaclass_eval(&block)
         metaclass.class_eval(&block)
       end
-      
+
       def define_singleton_method(name, &block)
         metaclass_eval { define_method(name, &block) }
       end
-      
+
+      alias_core_method :method_missing, :method_missing_without_nesting
+
     end
   end
 end
