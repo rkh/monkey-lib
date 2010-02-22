@@ -17,3 +17,5 @@ if ENV['BACKEND'] and not ENV['BACKEND'].empty?
     exit 1
   end
 end
+
+Monkey.show_invisibles!

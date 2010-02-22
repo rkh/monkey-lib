@@ -17,10 +17,24 @@ module Monkey
   def self.invisible(*from)
     yield
   rescue Exception => error
-    from << caller.first if from.empty?
-    from << __FILE__
-    error.backtrace.reject! { |l| from.any? { |f| l.include? f } }
+    unless show_invisibles?
+      from << caller.first if from.empty?
+      from << __FILE__
+      error.backtrace.reject! { |l| from.any? { |f| l.include? f } }
+    end
     raise error
+  end
+
+  def self.show_invisibles?
+    !!@show_invisibles
+  end
+
+  def self.show_invisibles!
+    @show_invisibles = true
+  end
+
+  def self.hide_invisibles!
+    @show_invisibles = false
   end
 
 end

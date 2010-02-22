@@ -13,7 +13,8 @@ setup_rspec = proc do
   SPEC_RUNNER = "mspec"
   def define_spec_task(name, ruby_cmd, pattern)
     Spec::Rake::SpecTask.new name do |t|
-      t.spec_opts = %w[-c --format progress --loadby mtime --reverse]
+      t.spec_opts += %w[-b -c --format progress --loadby mtime --reverse]
+      t.ruby_opts << "-W0"
       t.ruby_cmd = ruby_cmd
       t.pattern = pattern
     end
