@@ -1,5 +1,5 @@
 Monkey::Backend.new :Facets do
-  def self.setup
+  def setup
     load_libs :kernel => [:meta_class, :constant], :string => [:camelcase, :snakecase]
     # Actually, facets has Kernel#tap, but it behaves different if the block takes no argument.
     missing :tap, :extract_options, :parent

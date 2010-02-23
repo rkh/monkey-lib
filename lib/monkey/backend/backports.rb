@@ -1,5 +1,5 @@
 Monkey::Backend.new :Backports do
-  def self.setup
+  def setup
     load_libs "tools", "1.8.7/kernel", :rails => [:array, :string]
     missing :parent, :metaclass
     ::String.class_eval do

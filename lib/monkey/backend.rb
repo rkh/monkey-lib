@@ -11,7 +11,8 @@ module Monkey
       attr_accessor :backend_name, :backend_path
 
       def available?
-        Object.const_defined? backend_name
+        $LOADED_FEATURES.any? { |f| f =~ /^#{backend_path}/ }
+        #Object.const_defined? backend_name
       end
 
       def setup_complete
@@ -48,6 +49,27 @@ module Monkey
         end
       end
 
+      def version(default = "0")
+        return version(nil) || default unless default.nil?
+        return @version if @version
+        return unless defined? Gem
+        Gem.send :attr_accessor, :loaded_specs
+        return unless Gem.loaded_specs.respond_to? :[]
+        @version = Gem.loaded_specs[gem_name].version.to_s if Gem.loaded_specs.include? gem_name
+      end
+
+      def version!
+        version(nil) or raise RuntimeError, "unable to determine backend version"
+      end
+
+      def version?
+        !!version(false)
+      end
+
+      def gem_name
+        @gem_name ||= name[/[^:]*$/].downcase
+      end
+
     end
 
     def self.new(backend_name, backend_path = nil, &block)
@@ -56,7 +78,11 @@ module Monkey
       backend_path ||= backend_name.to_s.downcase
       mod.backend_name, mod.backend_path = backend_name.to_s, backend_path.to_s
       available_backends << mod
-      mod.class_eval(&block) if block
+      if block
+        eigenclass = class << mod; self; end
+        eigenclass.class_eval(&block)
+      end
+      mod
     end
 
     def self.preferred_backend

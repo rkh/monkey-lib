@@ -7,15 +7,20 @@ begin
 rescue LoadError
 end
 
-if ENV['BACKEND'] and not ENV['BACKEND'].empty?
-  puts "Using #{ENV['BACKEND']} (#{ENV['BACKEND_SETUP']} setup mode)"
-  case ENV['BACKEND_SETUP']
-  when "autodetect" then require ENV['BACKEND']
-  when "explicit" then Monkey.backend = ENV['BACKEND']
+BACKEND, BACKEND_SETUP = ENV['BACKEND'], ENV['BACKEND_SETUP']
+if BACKEND and not BACKEND.empty?
+  case BACKEND_SETUP
+  when "autodetect"
+    require BACKEND
+    Monkey::Backend.setup
+  when "explicit"
+    Monkey.backend = BACKEND
   else
     puts "Please set BACKEND_SETUP."
     exit 1
   end
+  version = "version " << Monkey.backend.version << ", " if Monkey.backend.version?
+  puts "Using #{BACKEND} (#{version}#{BACKEND_SETUP} setup mode)"
 end
 
 Monkey.show_invisibles!

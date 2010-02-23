@@ -1,5 +1,5 @@
 Monkey::Backend.new :Extlib do
-  def self.setup
+  def setup
     load_libs :object, :string, :inflection
     missing :parent, :extract_options, :tap
     ::Object.class_eval { alias metaclass meta_class }

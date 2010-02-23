@@ -1,9 +1,9 @@
 Monkey::Backend.new :ActiveSupport, :active_support do
-  def self.setup
+  def setup
     load_lib :version
-    expects_module "::ActiveSupport::CoreExtensions::String::Inflections" if ::ActiveSupport::VERSION::MAJOR < 3
+    expects_module "::ActiveSupport::CoreExtensions::String::Inflections" if version < "3"
     load_libs "core_ext/object" => [:metaclass, :misc], :core_ext => %w[array/extract_options string/inflections module/introspection]
-    if ::ActiveSupport::VERSION::MAJOR < 3
+    if version < "3"
       ::Array.send :include, ::ActiveSupport::CoreExtensions::Array::ExtractOptions
       ::Module.send :include, ::ActiveSupport::CoreExtensions::Module
     end
@@ -11,5 +11,12 @@ Monkey::Backend.new :ActiveSupport, :active_support do
       alias to_const_string camelcase
       alias to_const_path underscore
     end
+  end
+
+  def version(default = "0")
+    load_lib :version
+    @version ||= ActiveSupport::VERSION::STRING or super
+  rescue NameError
+    super
   end
 end
