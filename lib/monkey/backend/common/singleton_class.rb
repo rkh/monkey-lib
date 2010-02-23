@@ -1,9 +1,9 @@
 module Monkey
   module Backend
     module Common
-      module Metaclass
+      module SingletonClass
         ::Object.send :include, self
-        def metaclass
+        def singleton_class
           class << self
             self
           end

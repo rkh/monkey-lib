@@ -11,6 +11,9 @@ Monkey::Backend.new :ActiveSupport, :active_support do
       alias to_const_string camelcase
       alias to_const_path underscore
     end
+    ::Object.class_eval do
+      alias singleton_class metaclass unless respond_to? :singleton_class
+    end
   end
 
   def version(default = "0")

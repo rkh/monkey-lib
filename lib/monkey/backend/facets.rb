@@ -11,5 +11,8 @@ Monkey::Backend.new :Facets do
       alias to_const_path snakecase
       alias underscore snakecase
     end
+    ::Object.class_eval do
+      alias singleton_class meta_class unless respond_to? :singleton_class
+    end
   end
 end

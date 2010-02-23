@@ -3,7 +3,7 @@ module Monkey
     module Object
 
       # Defined by backend.
-      expects :metaclass, :tap
+      expects :singleton_class, :tap
 
       # Behaves like instance_eval or yield depending on whether a block takes an argument or not.
       #
@@ -25,12 +25,22 @@ module Monkey
         block.arity > 0 ? yield(self) : instance_eval(&block)
       end
 
-      def metaclass_eval(&block)
-        metaclass.class_eval(&block)
+      def singleton_class_eval(&block)
+        singleton_class.class_eval(&block)
       end
 
       def define_singleton_method(name, &block)
-        metaclass_eval { define_method(name, &block) }
+        singleton_class_eval { define_method(name, &block) }
+      end
+
+      def metaclass
+        warn "DEPRECATION WARNING: #metaclass will be removed, use #singleton_class (#{caller})"
+        singleton_class
+      end
+
+      def metaclass_eval(&block)
+        warn "DEPRECATION WARNING: #metaclass_eval will be removed, use #singleton_class_eval (#{caller})"
+        singleton_class_eval(&block)
       end
 
       alias_core_method :method_missing, :method_missing_without_nesting

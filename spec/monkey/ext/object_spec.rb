@@ -14,9 +14,9 @@ describe Monkey::Ext::Object do
       42.tap { 23 }.should == 42
     end
 
-    # expects :metaclass
-    it "imports metaclass from backend" do
-      @obj.metaclass.should == (class << @obj; self; end)
+    # expects :singleton_class
+    it "imports singleton_class from backend" do
+      @obj.singleton_class.should == (class << @obj; self; end)
     end
 
   end

@@ -53,7 +53,7 @@ def spec_task(name, backend = nil, mode = nil)
     define_spec_task(name, "BACKEND=#{backend.to_s.inspect} BACKEND_SETUP=#{mode.to_s.inspect} #{ENV['RUBY'] || RUBY}", "spec/**/*_spec.rb")
   else
     task(name) do
-      puts "", "could not load #{backend.inspect}, skipping specs."
+      puts "", "could not load #{backend.inspect}, skipping specs.", ""
     end
   end
 end
