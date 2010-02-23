@@ -29,12 +29,18 @@ module Monkey
     !!@show_invisibles
   end
 
-  def self.show_invisibles!
-    @show_invisibles = true
+  def self.show_invisibles!(show = true)
+    return @show_invisibles = show unless block_given?
+    # actually, that is not thread-safe. but that's no issue, as
+    # it is quite unlikely and does not cause any harm.
+    show_invisibles_was, @show_invisibles = @show_invisibles, show
+    result = yield
+    @show_invisibles = show_invisibles_was
+    result
   end
 
-  def self.hide_invisibles!
-    @show_invisibles = false
+  def self.hide_invisibles!(&block)
+    show_invisibles!(false, &block)
   end
 
 end
