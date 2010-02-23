@@ -1,10 +1,5 @@
 module Monkey
 
-  Dir[File.dirname(__FILE__) + "/monkey/*.rb"].sort.each do |path|
-    filename = File.basename(path, '.rb')
-    require "monkey/#{filename}"
-  end
-
   def self.backend=(backend)
     Backend.setup! backend
     backend
@@ -41,6 +36,11 @@ module Monkey
 
   def self.hide_invisibles!(&block)
     show_invisibles!(false, &block)
+  end
+
+  Dir[File.dirname(__FILE__) + "/monkey/*.rb"].sort.each do |path|
+    filename = File.basename(path, '.rb')
+    require "monkey/#{filename}"
   end
 
 end
