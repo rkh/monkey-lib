@@ -11,8 +11,10 @@ module Monkey
       attr_accessor :backend_name, :backend_path
 
       def available?
-        $LOADED_FEATURES.any? { |f| f =~ /^#{backend_path}/ }
-        #Object.const_defined? backend_name
+        return true if Object.const_defined? backend_name
+        $LOADED_FEATURES.any? do |f|
+          f =~ /^(.*lib\/)?#{backend_path}|#{backend_path}(-[^\/]+)?\/lib/
+        end
       end
 
       def setup_complete
