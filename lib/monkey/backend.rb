@@ -90,7 +90,7 @@ module Monkey
     end
 
     def self.setup?
-      @setup
+      !!@setup
     end
 
     def self.setup!(backend)
