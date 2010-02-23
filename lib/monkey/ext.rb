@@ -16,7 +16,6 @@ module Monkey
         if klass
           @core_class = klass
           klass.send :include, self
-          const_set :ClassMethods, ::Module.new unless const_defined? :ClassMethods
           self::ClassMethods.extend ClassDsl
           self::ClassMethods.core_class core_class
           klass.extend self::ClassMethods
@@ -71,7 +70,12 @@ module Monkey
     Dir[::File.dirname(__FILE__) + "/ext/*.rb"].sort.each do |path|
       filename   = ::File.basename(path, '.rb')
       class_name = filename.capitalize
-      extension  = eval "module ::Monkey::Ext::#{class_name}; self; end" # <- for MacRuby!?
+      extension  = eval <<-EOS
+        module ::Monkey::Ext::#{class_name} # <- for MacRuby!?
+          module ClassMethods; end          # <- for 1.9
+          self
+        end
+      EOS
       extension.extend ExtDSL
       extension.core_class ::Object.const_get(class_name)
       require "monkey/ext/#{filename}"

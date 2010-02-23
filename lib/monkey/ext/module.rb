@@ -15,8 +15,11 @@ module Monkey
       end
 
       def method_missing(name, *args, &block)
-        return method_missing_without_nesting(name, *args, &block) unless respond_to? :nested_method_missing
-        nested_method_missing(self, name, *args, &block)
+        if respond_to? :parent and parent.respond_to? :nested_method_missing
+          parent.nested_method_missing(self, name, *args, &block)
+        else
+          method_missing_without_nesting(name, *args, &block)
+        end
       end
 
     end
