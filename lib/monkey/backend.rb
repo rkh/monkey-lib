@@ -131,12 +131,10 @@ module Monkey
       detected
     end
 
-    # require backport first, since we preffer it over all the others if none is available already
     require "monkey/backend/backports"
-    Dir[File.dirname(__FILE__) + "/backend/*.rb"].sort.each do |path|
-      filename = File.basename(path, '.rb')
-      require "monkey/backend/#{filename}"
-    end
+    require "monkey/backend/active_support"
+    require "monkey/backend/facets"
+    require "monkey/backend/extlib"
 
   end
 end
