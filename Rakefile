@@ -50,7 +50,7 @@ end
 def spec_task(name, backend = nil, mode = nil)
   desc "runs specs #{"with backend #{backend} " if backend}#{"(#{mode} mode)" if mode}"
   if backend_available? backend
-    define_spec_task(name, "BACKEND=#{backend.to_s.inspect} BACKEND_SETUP=#{mode.to_s.inspect} #{ENV['RUBY'] || RUBY}", "spec/monkey/**/*_spec.rb")
+    define_spec_task(name, "BACKEND=#{backend.to_s.inspect} BACKEND_SETUP=#{mode.to_s.inspect} #{ENV['RUBY'] || RUBY}", "spec/**/*_spec.rb")
   else
     task(name) do
       puts "", "could not load #{backend.inspect}, skipping specs."
