@@ -4,7 +4,7 @@ module Monkey
       module Parent
         ::Module.send :include, self
         def parent
-          name =~ /^(.+)::[^:]+$/ ? $1.constantize : Object
+          name && name =~ /^(.+)::[^:]+$/ ? $1.constantize : Object
         end
       end
     end
