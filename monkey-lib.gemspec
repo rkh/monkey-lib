@@ -11,4 +11,5 @@ SPEC = Gem::Specification.new do |s|
   s.homepage         = "http://github.com/rkh/monkey-lib"
   s.require_paths    = ["lib"]
   s.summary          = s.description
+  s.add_development_dependency 'backports', '>= 1.15.0'
 end
