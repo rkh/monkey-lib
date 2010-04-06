@@ -4,7 +4,7 @@ Module.class_eval do
   alias const_missing_without_detection const_missing
 
   def const_missing(const_name)
-    if parent.autoloader? and not is_a? Monkey::Autoloader
+    if respond_to? :parent and parent.autoloader? and not is_a? Monkey::Autoloader
       extend Monkey::Autoloader
       const_missing const_name
     else
@@ -13,9 +13,8 @@ Module.class_eval do
   end
 
   def autoloader?
-    is_a? Monkey::Autoloader or (parent != self and parent.autoloader?)
+    is_a? Monkey::Autoloader or (respond_to? :parent and parent != self and parent.autoloader?)
   end
-
 end
 
 module Monkey
@@ -35,7 +34,7 @@ module Monkey
         end
       rescue LoadError => error
         begin
-          return parent.const_get(const_name) if parent != self
+          return parent.const_get(const_name) if respond_to? :parent and parent != self
         rescue NameError
         end
         warn "tried to load #{file}: #{error.message}"
