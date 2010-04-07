@@ -9,20 +9,20 @@ Version number will soon be synchronized with BigBand.
 
 == Backends
 Those libraries are supported as backends out of the box:
-* ActiveSupport (tested with 2.3.2 to 3.0.pre)
-* Backports (tested with 1.11.1 to 1.13.2, >= 1.13.1 required for Rubinius)
+* ActiveSupport (tested with 2.3.2 to 3.0.beta)
+* Backports (tested with 1.11.1 to 1.15.0, >= 1.13.1 required for Rubinius)
 * Extlib (tested with 0.9.13 and 0.9.14)
-* Facets (tested with 2.8.0 and 2.8.1)
+* Facets (tested with 2.8.0 to 2.8.2)
 
 == Ruby versions
 MonkeyLib has been tested and is known to work with the following Ruby implementations:
 
 * Ruby (MRI) 1.8.6, 1.8.7, 1.9.1, 1.9.2-preview1
 * Ruby Enterprise Edition 2009.10, 2010.01
-* Rubinius 1.0.0-rc2, 1.0.0-rc3
+* Rubinius 1.0.0-rc2 to 1.0.0-rc4
 * JRuby 1.3.1, 1.4.0
-* MagLev 22780, 2804, 2816 (Backports backend recommended, but all expectations pass on all backends)
-* IronRuby 0.9.3 (only Extlib and Backports)
+* MagLev 22780 to 23191 (Backports backend recommended, but all expectations pass on all backends)
+* IronRuby 0.9.3, 1.0-rc2 (only Extlib and Backports)
 
 Currently it does *not* run on MacRuby, but I'm working on it.
 
