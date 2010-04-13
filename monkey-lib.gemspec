@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 SPEC = Gem::Specification.new do |s|
   s.name             = "monkey-lib"
-  s.version          = "0.4.0.a"
+  s.version          = "0.4.0"
   s.authors          = ["Konstantin Haase"]
   s.description      = "Making ruby extension frameworks pluggable."
   s.email            = "konstantin.mailinglists@googlemail.com"
@@ -11,5 +11,5 @@ SPEC = Gem::Specification.new do |s|
   s.homepage         = "http://github.com/rkh/monkey-lib"
   s.require_paths    = ["lib"]
   s.summary          = s.description
-  s.add_development_dependency 'backports', '>= 1.15.0'
+  s.add_development_dependency 'backports'
 end
