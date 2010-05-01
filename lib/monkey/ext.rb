@@ -28,7 +28,7 @@ module Monkey
           unless klass.is_a? Class
             ObjectSpace.each_object(Module) do |mod|
               next unless mod.ancestors.include? klass and not mod.ancestors.include? self
-              mod.send(:include, self)
+              mod.send :include, klass
             end
           end
         end
