@@ -18,7 +18,6 @@ module Monkey
           klass.send :include, self
           self::ClassMethods.extend ClassDsl
           self::ClassMethods.core_class core_class
-          klass.extend self::ClassMethods
           @core_class.class_eval <<-EOS
             def method_missing(meth, *args, &blk)
               return super if Monkey::Backend.setup?
@@ -26,8 +25,19 @@ module Monkey
               __send__(meth, *args, &blk)
             end
           EOS
+          unless klass.is_a? Class
+            ObjectSpace.each_object(Module) do |mod|
+              next unless mod.ancestors.include? klass and not mod.ancestors.include? self
+              mod.send(:include, self)
+            end
+          end
         end
         return @core_class
+      end
+
+      def included(klass)
+        klass.extend self::ClassMethods
+        super
       end
 
       def rename_core_method(old_name, new_name)
