@@ -1,5 +1,5 @@
 $LOAD_PATH.unshift File.expand_path(__FILE__.sub("spec/spec_helper.rb", "lib"))
-require "monkey"
+require "monkey-lib"
 
 # I hate that code, but rbx for some reason ignores RUBYOPT.
 begin

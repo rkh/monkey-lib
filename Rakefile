@@ -59,7 +59,7 @@ end
 
 task :environment do
   $LOAD_PATH.unshift "lib"
-  require "monkey"
+  require "monkey-lib"
 end
 
 desc "run all specs"

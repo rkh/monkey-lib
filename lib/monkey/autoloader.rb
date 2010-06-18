@@ -1,4 +1,4 @@
-require "monkey"
+require "monkey-lib"
 
 Module.class_eval do
   alias const_missing_without_detection const_missing
