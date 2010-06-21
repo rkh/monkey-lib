@@ -17,7 +17,7 @@ module Monkey
           @core_class = klass
           klass.send :include, self
           self::ClassMethods.extend ClassDsl
-          self::ClassMethods.core_class core_class
+          self::ClassMethods.core_class @core_class
           @core_class.class_eval <<-EOS
             def method_missing(meth, *args, &blk)
               return super if Monkey::Backend.setup?
@@ -26,10 +26,13 @@ module Monkey
             end
           EOS
           unless klass.is_a? Class
+            # HACK: Don't modify modules while looping through object space.
+            # JRuby does not like that.
+            list = []
             ObjectSpace.each_object(Module) do |mod|
-              next unless mod.ancestors.include? klass and not mod.ancestors.include? self
-              mod.send :include, klass
+              list << mod if mod.ancestors.include? klass and not mod.ancestors.include? self
             end
+            list.each { |e| e.send :include, klass }
           end
         end
         return @core_class
