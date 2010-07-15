@@ -1,4 +1,5 @@
 require "pathname"
+require "monkey/engine"
 
 module Monkey
   module Ext
@@ -26,10 +27,16 @@ module Monkey
             end
           EOS
           unless klass.is_a? Class
+            list = []
+            if Monkey::Engine.jruby? and JRUBY_VERSION < '1.5.0'
+              warn "\n\nATTENTION: Your JRuby is outdated. Please upgrade.\n\n"
+              type = Class
+            else
+              type = Module
+            end
             # HACK: Don't modify modules while looping through object space.
             # JRuby does not like that.
-            list = []
-            ObjectSpace.each_object(Class) do |mod|
+            ObjectSpace.each_object(type) do |mod|
               list << mod if mod.ancestors.include? klass and not mod.ancestors.include? self
             end
             list.each { |e| e.send :include, klass }
