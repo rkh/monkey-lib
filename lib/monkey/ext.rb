@@ -29,7 +29,7 @@ module Monkey
             # HACK: Don't modify modules while looping through object space.
             # JRuby does not like that.
             list = []
-            ObjectSpace.each_object(Module) do |mod|
+            ObjectSpace.each_object(Class) do |mod|
               list << mod if mod.ancestors.include? klass and not mod.ancestors.include? self
             end
             list.each { |e| e.send :include, klass }
