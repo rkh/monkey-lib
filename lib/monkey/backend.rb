@@ -97,9 +97,9 @@ module Monkey
 
     def self.setup!(backend)
       if backend
+        @setup = true
         @backend = detect_backend(backend)
         @backend.setup
-        @setup = true
         @backend
       else
         available_backends.each do |backend|
