@@ -28,8 +28,7 @@ module Monkey
           EOS
           unless klass.is_a? Class
             list = []
-            if Monkey::Engine.jruby? and JRUBY_VERSION < '1.5.0'
-              warn "\n\nATTENTION: Your JRuby is outdated. Please upgrade.\n\n"
+            if Monkey::Engine.jruby?
               type = Class
             else
               type = Module
