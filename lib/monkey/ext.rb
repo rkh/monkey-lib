@@ -26,22 +26,29 @@ module Monkey
               __send__(meth, *args, &blk)
             end
           EOS
-          unless klass.is_a? Class
-            list = []
-            if Monkey::Engine.jruby?
-              type = Class
-            else
-              type = Module
-            end
-            # HACK: Don't modify modules while looping through object space.
-            # JRuby does not like that.
-            ObjectSpace.each_object(type) do |mod|
-              list << mod if mod.ancestors.include? klass and not mod.ancestors.include? self
-            end
-            list.each { |e| e.send :include, klass }
-          end
+          propagate_include
         end
-        return @core_class
+        @core_class
+      end
+
+      if Monkey::Engine.jruby? and JRUBY_VERSION < '1.6.0'
+        def each_module(&block)
+          list = []
+          ObjectSpace.each_object(Class) { |c| list << c }
+          list.each(&block)
+        end
+      else
+        def each_module(&block)
+          ObjectSpace.each_object(Module, &block)
+        end
+      end
+
+      def propagate_include
+        return if core_class.is_a? Class
+        each_module do |mod|
+          next unless mod < core_class and not mod < self
+          mod.send(:include, core_class)
+        end
       end
 
       def included(klass)
