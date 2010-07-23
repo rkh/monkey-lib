@@ -7,7 +7,6 @@ module Monkey
       expects :constantize, :to_const_string, :to_const_path, :underscore, :camelcase
 
       feature :version do
-
         def to_version
           dup.to_version!
         end
@@ -16,11 +15,9 @@ module Monkey
           extend Monkey::Version
           self
         end
-
       end
 
       feature :pathname do
-
         def atime
           Pathname(self).atime
         end
@@ -176,9 +173,7 @@ module Monkey
         def symlink?
           Pathname(self).symlink?
         end
-
       end
-
     end
   end
 end
