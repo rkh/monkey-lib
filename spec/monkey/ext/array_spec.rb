@@ -1,7 +1,6 @@
 require __FILE__.sub(%r{monkey/.*$}, "spec_helper")
 
 describe Monkey::Ext::Array do
-
   describe "backend expectations" do
     # expects :extract_options!
     it "imports extract_options! from backend" do
@@ -18,7 +17,6 @@ describe Monkey::Ext::Array do
   end
 
   describe "select!" do
-
     it "results in the same arrays as Array#select" do
       ([1, 2, 3, 4, 5, 6].select! { |e| e > 3 }).should == ([1, 2, 3, 4, 5, 6].select { |e| e > 3 })
       ([1, 2, 3, 4, 5, 6].select! { |e| e < 0 }).should == ([1, 2, 3, 4, 5, 6].select { |e| e < 0 })
@@ -29,7 +27,11 @@ describe Monkey::Ext::Array do
       x.select! { |e| e > 3 }
       x.should == [4, 5, 6]
     end
-
   end
 
+  describe '+@' do
+    it 'returns a set' do
+      (+[1,2]).should be_a(Set)
+    end
+  end
 end

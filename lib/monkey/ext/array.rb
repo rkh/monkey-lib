@@ -1,3 +1,5 @@
+require 'set'
+
 module Monkey
   module Ext
     module Array
@@ -9,6 +11,9 @@ module Monkey
         replace select(&block)
       end
 
+      def +@
+        Set.new self
+      end
     end
   end
 end
