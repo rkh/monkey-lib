@@ -1,5 +1,4 @@
 module Monkey
-
   def self.backend=(backend)
     Backend.setup! backend
     backend
@@ -54,5 +53,4 @@ module Monkey
     filename = File.basename(path, '.rb')
     require "monkey/#{filename}"
   end
-
 end
