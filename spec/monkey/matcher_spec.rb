@@ -11,7 +11,7 @@ describe Monkey::Matcher do
     matcher = Monkey::Matcher.new { |x| /foo/ === x }
     case 'foobar'
     when matcher then nil
-    else flunk 'did not match'
+    else fail 'did not match'
     end
   end
 end
