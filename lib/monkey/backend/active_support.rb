@@ -2,7 +2,7 @@ Monkey::Backend.new :ActiveSupport, :active_support do
   def setup
     load_lib :version
     expects_module "::ActiveSupport::CoreExtensions::String::Inflections" if version < "3"
-    load_libs :core_ext => %w[object/misc array/extract_options string/inflections module/introspection]
+    load_libs :core_ext => %w[array/extract_options string/inflections module/introspection]
     if version < "3"
       begin
         load_libs "core_ext/object/singleton_class"
@@ -10,6 +10,7 @@ Monkey::Backend.new :ActiveSupport, :active_support do
         load_libs "core_ext/object/metaclass"
         ::Object.send(:alias_method, :singleton_class, :metaclass)
       end
+      load_libs "core_ext/object/misc"
       ::Array.send  :include, ::ActiveSupport::CoreExtensions::Array::ExtractOptions
       ::Module.send :include, ::ActiveSupport::CoreExtensions::Module
       ::String.send :include, ::ActiveSupport::CoreExtensions::String::Inflections
