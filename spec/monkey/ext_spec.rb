@@ -6,7 +6,7 @@ describe Monkey::Ext do
     before do
       @core_class = Class.new
       @extension = Module.new
-      @extension::ClassMethods = Module.new
+      @extension::ExtClassMethods = Module.new
       @extension.extend Monkey::Ext::ExtDSL
       @extension.core_class @core_class
     end

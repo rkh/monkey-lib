@@ -1,7 +1,7 @@
 module Monkey
   module Ext
     module File
-      module ClassMethods
+      module ExtClassMethods
         def write(path, content = '', mode = 'w')
           File.open(path, mode) { |f| f.write content }
           content

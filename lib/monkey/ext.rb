@@ -17,8 +17,8 @@ module Monkey
         if klass
           @core_class = klass
           klass.send :include, self
-          self::ClassMethods.extend ClassDsl
-          self::ClassMethods.core_class @core_class
+          self::ExtClassMethods.extend ClassDsl
+          self::ExtClassMethods.core_class @core_class
           @core_class.class_eval <<-EOS
             def method_missing(meth, *args, &blk)
               return super if Monkey::Backend.setup?
@@ -52,7 +52,7 @@ module Monkey
       end
 
       def included(klass)
-        klass.extend self::ClassMethods
+        klass.extend self::ExtClassMethods
         super
       end
 
@@ -78,7 +78,7 @@ module Monkey
       end
 
       def class_methods(&block)
-        self::ClassMethods.class_eval(&block)
+        self::ExtClassMethods.class_eval(&block)
       end
 
       def expects(*list)
@@ -98,7 +98,7 @@ module Monkey
       class_name = filename.capitalize
       extension  = eval <<-EOS
         module ::Monkey::Ext::#{class_name} # <- for MacRuby!?
-          module ClassMethods; end          # <- for 1.9
+          module ExtClassMethods; end          # <- for 1.9
           self
         end
       EOS
