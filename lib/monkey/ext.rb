@@ -96,12 +96,8 @@ module Monkey
     Dir[::File.dirname(__FILE__) + "/ext/*.rb"].sort.each do |path|
       filename   = ::File.basename(path, '.rb')
       class_name = filename.capitalize
-      extension  = eval <<-EOS
-        module ::Monkey::Ext::#{class_name} # <- for MacRuby!?
-          module ClassMethods; end          # <- for 1.9
-          self
-        end
-      EOS
+      extension  = ::Monkey::Ext.const_set(class_name, ::Module.new) # <- for MacRuby!?
+      extension.const_set("ClassMethods", ::Module.new) # <- for 1.9
       extension.extend ExtDSL
       extension.core_class ::Object.const_get(class_name)
       require "monkey/ext/#{filename}"
