@@ -52,10 +52,10 @@ module Monkey
     unless defined? RUBY_ENGINE_VERSION
       begin
         # ruby, jruby, macruby, some rubinius versions
-        ::RUBY_ENGINE_VERSION = const_get("#{RUBY_ENGINE.upcase}_VERSION")
+        ::RUBY_ENGINE_VERSION = Object.const_get("#{RUBY_ENGINE.upcase}_VERSION")
       rescue NameError
         # maglev, some rubinius versions
-        ::RUBY_ENGINE_VERSION = const_get("VERSION")
+        ::RUBY_ENGINE_VERSION = Object.const_get("VERSION")
       end
     end
 
